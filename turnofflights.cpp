@@ -1,43 +1,43 @@
 #include <iostream>
-#include <string>
 using namespace std;
+int n, k;
+string bulbs;
 
-int countOps(string &bulbs, int n, int l) {
-    int ops = 0;
+// Function to check if we can turn off all the bulbs with given x
+bool can(int x) {
+    int operations = 0;
     int i = 0;
+
     while (i < n) {
         if (bulbs[i] == '1') {
-            ops++;
-            i += l;
+            operations++;
+            i += x;  
         } else {
             i++;
         }
     }
-    return ops;
+
+    return operations <= k;
 }
-
 int main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-
-    int n, k;
     cin >> n >> k;
-
-    string bulbs;
     cin >> bulbs;
 
-    int lo = 1, hi = n, ans = n;
+    int low = 1, high = n;
+    int answer = n;
 
-    while (lo <= hi) {
-        int mid = (lo + hi) / 2;
-        if (countOps(bulbs, n, mid) <= k) {
-            ans = mid;
-            hi = mid - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+
+        if (can(mid)) {
+            answer = mid;
+            high = mid - 1;  // try smaller x
         } else {
-            lo = mid + 1;
+            low = mid + 1;   // need bigger x
         }
     }
 
-    cout << ans << "\n";
+    cout << answer << endl;
+
     return 0;
 }
